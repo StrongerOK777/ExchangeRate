@@ -2,17 +2,32 @@ import streamlit as st
 import requests
 import pandas as pd
 import numpy as np
+import time
 
 st.set_page_config(page_title="全球汇率计算", page_icon="💰", layout="wide")
 
-import os
+# --- 关键修改：增加启动缓冲 ---
+def get_api_key():
+    # 尝试读取 3 次，每次间隔 1 秒
+    for _ in range(3):
+        key = st.secrets.get("API_KEY")
+        if key:
+            return key
+        time.sleep(1)
+    return None
 
-API_KEY = st.secrets.get("API_KEY")
+API_KEY = get_api_key()
 
-
+# 不要用 st.stop()，改用条件判断包裹后续逻辑
 if not API_KEY:
-    st.error("🔑 请在 Streamlit Cloud 的 Settings -> Secrets 中配置 API_KEY")
-    st.stop()
+    st.warning("🔄 正在等待云端 Secrets 加载，请稍后刷新页面...")
+    st.info("如果你已经配置了 Secrets 但仍看到此提示，请点击右侧的 'Reboot App'")
+else:
+    # 将你剩下的所有 get_rates 定义和 UI 代码都放在这个 else 里面
+    @st.cache_data(ttl=3600)
+    def get_rates(base_currency):
+        # ... 保持你原来的 get_rates 代码 ...
+
 
 @st.cache_data(ttl=3600)
 def get_rates(base_currency):

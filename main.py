@@ -5,10 +5,13 @@ import numpy as np
 
 st.set_page_config(page_title="全球汇率计算", page_icon="💰", layout="wide")
 
-try:
-    API_KEY = st.secrets["API_KEY"]
-except Exception:
-    st.error("❌ 未找到 API_KEY！请检查 .streamlit/secrets.toml 文件。")
+import os
+
+API_KEY = st.secrets.get("API_KEY")
+
+
+if not API_KEY:
+    st.error("🔑 请在 Streamlit Cloud 的 Settings -> Secrets 中配置 API_KEY")
     st.stop()
 
 @st.cache_data(ttl=3600)
@@ -70,7 +73,7 @@ final_target = st.select_slider("选择最终汇总货币", options=CURRENCY_LIS
 total_sum = 0.0
 
 # 遍历渲染每一行
-for i, row in enumerate(st.session_state.rows if 'rows' in st.session_state else st.session_state.calc_rows):
+for i, row in enumerate(st.session_state.calc_rows):
     r1, r2, r3, r4 = st.columns([1, 2, 2, 1])
     
     with r1:
@@ -101,6 +104,11 @@ for i, row in enumerate(st.session_state.rows if 'rows' in st.session_state else
 if st.button("➕ 添加一笔金额"):
     st.session_state.calc_rows.append({'amount': 0.0, 'currency': 'USD', 'op': '+'})
     st.rerun()
+
+# 显示合计结果
+st.divider()
+st.markdown(f"### 💰 合计")
+st.markdown(f"<h1 style='color: #1a73e8;'>{total_sum:,.2f} {final_target}</h1>", unsafe_allow_html=True)
 
 st.divider()
 # 最终统计结果

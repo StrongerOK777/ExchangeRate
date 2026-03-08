@@ -1,32 +1,19 @@
 [theme]
-# 主色调
 primaryColor = "#1a73e8"
 
-# 背景色（浅色模式）
 backgroundColor = "#ffffff"
 
-# 侧边栏背景色
 secondaryBackgroundColor = "#f0f2f6"
 
-# 正文字体颜色
 textColor = "#262730"
 
-# 字体
 font = "sans serif"
 
 
 [server]
-# 本地开发端口
-port = 8501
-
-# 允许外部访问（部署时可改为 true）
-headless = false
-
-# 文件变更时自动重载
+# 文件变更时自动重载（本地开发用，云端无害）
 runOnSave = true
 
-
 [browser]
-# 自动打开浏览器
-serverAddress = "localhost"
+# 关闭向 Streamlit 官方发送匿名统计
 gatherUsageStats = false

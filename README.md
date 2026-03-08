@@ -155,6 +155,14 @@ CURRENCY_LIST = ["CNY", "USD", "KRW", "EUR", "JPY", "GBP", "HKD"]
 
 ---
 
+## 🌐 在线使用
+
+不想自己部署的同学，可以直接访问在线版本：
+
+👉 [https://cur-converter.streamlit.app](https://cur-converter.streamlit.app)
+
+---
+
 ## 📄 License
 
 本项目采用 [MIT License](LICENSE) 开源协议。
